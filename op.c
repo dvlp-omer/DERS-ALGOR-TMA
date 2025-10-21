@@ -47,6 +47,27 @@ printf("1 ile 100 arasındaki sayıların toplamı: %d", sum);
    printf("\n1 ile 100 arasındaki sayıların toplamının ortalaması %d",ortalama);
 return 0;
 */
+/*
+int x;
+double carpim = 1;
+
+for (x=1; x<10;x++){
+    carpim *= x;
+
+}printf("çarpım: %lf\n", carpim);
+*/
+
+//1 ile 100 arasındaki tek sayıları ve adedini ekrana yazdıran C kodu
+
+ int x,count= 0;
+
+ for(x=1; x<1000; x= x+2)
+ {
+    printf(" %d ", x);
+    count++;
+ }
+    printf("\n1 ile 1000 arasındaki tek sayıların adedi : %d\n", count);
+
 
 
 
