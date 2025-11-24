@@ -1,50 +1,69 @@
-/*
-#include <stdio.h>
-int main(){
-
-    int i, C[]={ -5,6,0,72,1543,-89,0,62,-3,1,6453,78};
-    for(i= 0;i<12;i++)
-    printf("C[%d] = %d\n", i,C[i]);
-}*/
 
 
 /*
 #include <stdio.h>
-#define SIZE 10 // dizimizin kaç elemanlı olduğunu verir (size)
 int main(){
 
-    int A[SIZE],number,i;
-    printf("Enter a number");
-    scanf("%d", &number);
+    //matrisin satır satır ekrana yazdırılması;
+int i, j, A[3][3] = {{4, 8, 12}, { 51, 73, 54}, {40, 60, 71}};
 
-    for(i= 0;i< SIZE;i++)
-    A[i] = number;
-    //diziyi ekrana yazdırmak icin kullan
-    for(i= 0; i< SIZE;i++)
-    printf("A[%d]= %d\n", i, A[i]);
-}*/
- /*
-#include <stdio.h>
-int main(){
-    char Name[] = {'s','e','n','g','u','l', '\0'};
-
-    int i;
-    for(i = 0; i< 6; i++)
-    printf("Name[%d]= %c\n", i ,Name[i]);
+//printf("A[0][0] = %d", A[0][0]);
+for(i = 0; i< 3;i++){
+    for(j = 0; j< 3;j++){
+    printf("%d ", A[i][j]);
+    
+}
+printf("\n");
+}
+return 0;
 }
 */
- // 100 elemanlı int türden A dizisinin elemanlarına 2 den başlyarak 
- //cift sayıları atayan C kodunu yazınız
+ 
 /*
  #include <stdio.h>
- #define SIZE 100
- int main(){
-    int A[SIZE],i;
-    for(i = 0;i<SIZE;i++)
-    A[i]= (i+1) * 2;
-   for(i = 0;i<SIZE;i++)
-   printf("A[%d]= %d\n",i, A[i]);
+ #include <math.h>
+  
+  int main(){
+    printf("%lf\n", sqrt(900.00));// kare kök
+    printf("%lf\n", cbrt(27));// küp kök
+    printf("%lf\n", fabs(-34));// mutlak deger
+    printf("%lf\n", pow(4,6));//(parametrelerin sıralaması önemli "4 ün 6. kuvveti")
+
+  }
+  */
 
 
- }
- */
+//İki sayinin toplamını hesaplayan bir fonksiyon yazalim
+//1- declaration( geri dönüş türü ( int, float , void) Fonksiyona bir okunabilir ad, parametreler tanımlanmalı)
+//2- Bildirim 
+
+
+#include <stdio.h>
+#include <math.h>
+int topla (int x, int y);
+int topla (int x, int y);
+int topla_float(float a, float b, float c);
+
+{
+ return = x+y;
+}
+int main()
+{
+printf("%d\n", topla (5,4));
+printf("%d\n", topla(90,80));
+printf("%lf",topla_float(9.583,8,2523));
+printf("%d\n", Carpma(2,3,5,7));
+}
+
+
+
+
+int Carpma(int x, int y, int z,int t){
+    return x*y*z*t;
+}
+
+
+
+
+
+
