@@ -1,0 +1,126 @@
+case 1:
+                stock_back:
+                    int stock_category;
+                    printf("\nStocks Menu & Price Management\n___________________\n\n1.Fruits & Vegetables\n2.Meat & Chicken & Fish\n3.Milk & Dairy Products\n4.Snacks\n\n");
+                    printf("Selection: ");
+                    scanf("%d", &stock_category);
+
+                    // Manager Stock View
+                    switch (stock_category) {
+                    case 1:
+                         
+                    veg_try_again:
+                                         // Ekranı temizleyelim ki liste düzgün dursun
+                        printf("--- FRUIT & VEGETABLE MANAGEMENT ---\n");
+                        
+                        // Stok ve Fiyatı yan yana gösteren döngü
+                        for (int i = 0; i < 12; i++) {
+                            printf("%d. %-15s | Stock: %.2f kg | Price: %.2f TL\n", i + 1, veg_names[i], veg_leftovers[i], veg_prices[i]); //
+                        }
+
+                        printf("\n[0] Go Back | [1-12] Select Product to UPDATE PRICE\nSelection: ");
+                        int p_idx;
+                        scanf("%d", &p_idx);
+
+                        if (p_idx == 0) { goto stock_back; } // Geri döner
+                        else if (p_idx >= 1 && p_idx <= 12) {
+                            float new_price;
+                            printf("\nEnter New Price for %s: ", veg_names[p_idx-1]);
+                            scanf("%f", &new_price);
+                            
+                            veg_prices[p_idx-1] = new_price; // Fiyatı kalıcı olarak değiştiren satır!
+                            printf("\n[SUCCESS] Price updated. Returning to list...");
+                            Sleep(1500);
+                            goto veg_try_again; // Güncel fiyatı görmen için listeyi yeniler
+                        }
+                        else {
+                        printf("\nInvalid selection! Try again.");
+                        Sleep(1000);
+                        goto veg_try_again;
+                    }
+                      
+
+                    case 2:
+                         
+                    meat_try_again:
+                        printf("--- MEAT & CHICKEN & FISH MANAGEMENT---\n");
+
+                        for (int i = 0; i < 4; i++) {
+                        printf("%d. %-15s | Stock: %.2f kg | Price: %.2f TL\n", i + 1, meat_names[i], meat_leftovers[i], meat_prices[i]);
+                        }
+
+                        printf("\n[0] Go Back | [1-4] Select Product to UPDATE PRICE\nSelection: ");
+                        int m_idx; // Et seçimi için değişken
+                        scanf("%d", &m_idx);
+
+                        if (m_idx == 0) { goto stock_back; } // Geri döner
+                        else if (m_idx >= 1 && m_idx <= 4) {
+                            float new_meat_price;
+                            printf("\nEnter New Price for %s: ", meat_names[m_idx - 1]);
+                            scanf("%f", &new_meat_price);
+                            
+                            meat_prices[m_idx - 1] = new_meat_price; // Et fiyatını dizide günceller
+                            printf("\n[SUCCESS] Meat price updated! Returning to list...");
+                            Sleep(1500);
+                            goto meat_try_again; // Listeyi yenilemek için geri gider
+                        }
+                        else {
+                            printf("\nInvalid selection! Try again.");
+                            Sleep(1000);
+                            goto meat_try_again;
+                        }
+                        break;
+
+                    case 3:
+                         
+                    milk_try_again:
+                        
+                        printf("--- MILK & DAIRY PRODUCTS MANAGEMENT ---\n");
+                        for (int i = 0; i < 4; i++) {
+                            printf("%d. %-15s | Stock: %.2f L/kg | Price: %.2f TL\n", i + 1, milk_names[i], milk_leftovers[i], milk_prices[i]);
+                        }
+                        printf("\n[0] Go Back | [1-4] Select Product to UPDATE PRICE\nSelection: ");
+                        int milk_idx;
+                        scanf("%d", &milk_idx);
+
+                        if (milk_idx == 0) { goto stock_back; }
+                        else if (milk_idx >= 1 && milk_idx <= 4) {
+                            float new_milk_price;
+                            printf("\nEnter New Price for %s: ", milk_names[milk_idx - 1]);
+                            scanf("%f", &new_milk_price);
+                            milk_prices[milk_idx - 1] = new_milk_price; // Süt fiyatını günceller
+                            printf("\n[SUCCESS] Milk price updated!");
+                            Sleep(1500);
+                            goto milk_try_again;
+                        } else {
+                            printf("\nInvalid Selection!"); Sleep(1000); goto milk_try_again;
+                        }
+                        break;
+
+                    case 4:
+                         
+                    snack_try_again:
+                    printf("--- SNACKS MANAGEMENT ---\n");
+                    for (int i = 0; i < 4; i++) {
+                        // Atıştırmalıklar adet olduğu için %d kullanıyoruz stokta
+                        printf("%d. %-15s | Stock: %d packets | Price: %.2f TL\n", i + 1, snack_names[i], snacks_leftovers[i], snacks_prices[i]);
+                    }
+                    printf("\n[0] Go Back | [1-4] Select Product to UPDATE PRICE\nSelection: ");
+                    int snack_idx;
+                    scanf("%d", &snack_idx);
+
+                    if (snack_idx == 0) { goto stock_back; }
+                    else if (snack_idx >= 1 && snack_idx <= 4) {
+                        float new_snack_price;
+                        printf("\nEnter New Price for %s: ", snack_names[snack_idx - 1]);
+                        scanf("%f", &new_snack_price);
+                        snacks_prices[snack_idx - 1] = new_snack_price; // Atıştırmalık fiyatını günceller
+                        printf("\n[SUCCESS] Snack price updated!");
+                        Sleep(1500);
+                        goto snack_try_again;
+                    } else {
+                        printf("\nInvalid Selection!"); Sleep(1000); goto snack_try_again;
+                    }
+                    break;
+                    }
+                    break;
