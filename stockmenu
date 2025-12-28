@@ -1,4 +1,515 @@
-case 1:
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <windows.h> 
+#include <stdlib.h>
+
+
+float total_cart = 0;
+float market_vault = 0;
+
+float price_calculate(float product, float amount) {
+    float price_total = (float)(product * amount);
+
+    total_cart = total_cart + price_total;
+    printf("\nProduct Amount = %.2lf TL // Total Cart = %.2lf TL\n", price_total, total_cart);
+
+    return price_total;
+}
+
+int main() {
+    int nyw_i = 0;
+    char new_year_message_1[] = "\nYeni Yiliniz Kutlu Olsun\n";
+    char new_year_message_2[] = "\nUmariz Hepimiz Icin Guzellikler Ile Dolu Bir Yil Olur\n                        :)";
+    while (new_year_message_1[nyw_i] != '\0') {
+        printf("%c", new_year_message_1[nyw_i]);
+        Sleep(100);
+        nyw_i++;
+    }
+    nyw_i = 0;
+    Sleep(500);
+    while (new_year_message_2[nyw_i] != '\0') {
+        printf("%c", new_year_message_2[nyw_i]);
+        Sleep(100);
+        nyw_i++;
+    }
+    Sleep(2500);
+    // --- DEGISKENLER ---
+    int menu_selection;
+    int master_password = 2503;
+    int user_input;
+    int attempts;
+    int manager_menu;
+    float amount;
+    int back;
+     char point[] =  "..." ;
+    int point_delay = 0;
+    // --- YENI EKLENEN SILME DEGISKENLERI ---
+    int del_category;
+    int del_product;
+    float del_amount;
+    // ---------------------------------------
+
+    // --- STOKLAR ---
+    float veg_leftovers[] = { 100, 40, 50, 22, 10, 50, 11, 23, 100, 41, 23, 12 };
+    float meat_leftovers[] = { 50, 30, 40, 20 };
+    float milk_leftovers[] = { 60, 40, 30, 50 };
+    int snacks_leftovers[] = { 100, 200, 150, 100 };
+
+    // --- SEPETLER ---
+    float veg_cart[12] = { 0 };
+    float meat_cart[4] = { 0 };
+    float milk_cart[4] = { 0 };
+    int snack_cart[4] = { 0 };
+
+    // --- ISIMLER ---
+    const char* veg_names[] = { "Onion","Patato","Apple","Carrot","Hiyar","Grapes","Orange","Mexican Pepper","Tomato","Dragon Fruit","Mango","Blueberry" };
+    const char* meat_names[] = { "Beef","Minced Meat","Chicken","Salmon" };
+    const char* milk_names[] = { "Milk","Yogurt","Cheese","Butter" };
+    const char* snack_names[] = { "Chocalate","Chips","Jelly Beans","Biscuit" };
+
+    // --- FIYATLAR ---
+    float veg_prices[] = { 12.5,5,7,2,2.75,45,62,4,6,1,43,5 };
+    float meat_prices[] = { 600,450,200,500 };
+    float milk_prices[] = { 30,105,400,200 };
+    float snacks_prices[] = { 15,25,8, 12.5 };
+
+
+startmenu:
+     
+    printf("Select Manager or Customer Menu.\n1.Shopping List Menu\n2.Manager Menu\n3.Exit\n");
+    scanf("%d", &menu_selection);
+
+    if (menu_selection == 1 || menu_selection == 2 || menu_selection == 3) {
+        switch (menu_selection) {
+        case 1:
+            // Customer Menu
+             
+            int shopping_category;
+        shopping_back:
+             
+            printf("\n===Shopping Menu===\nCart Amount: %.2lf TL\n\n1.Fruits & Vegetables\n2.Meat & Chicken & Fish\n3.Milk & Dairy Products\n4.Snacks\n5.Complete Shopping \n\n", total_cart);
+            scanf("%d", &shopping_category);
+
+            switch (shopping_category) {
+
+            case 1: // SEBZELER
+                 
+            shop_veg_try_again:
+
+                printf("=== FRUITS & VEGETABLES ===\n");
+                for (int i = 0; i < 12; i++) {
+                    printf("|%d.%s= %.2lf TL/Kg | Stok: %.2lf|\n", i + 1, veg_names[i], veg_prices[i], veg_leftovers[i]);
+                }
+                printf("___________________\n");
+
+                int veg_product_num;
+                printf("\nProduct Code: ");
+                scanf("%d", &veg_product_num);
+                //Ürün Seçimi
+
+                if (veg_product_num < 1 || veg_product_num > 12) {
+                    //Hatalı Tuşlama Kodu
+                    
+                    printf("Wrong Number!\n");
+                    Sleep(1000);
+                    goto shop_veg_try_again;
+                }
+                //Satın Alınacak Miktar
+                
+                printf("\nProduct: %s \n", veg_names[veg_product_num - 1]);
+                printf("Amount: ");
+                scanf("%f", &amount);
+
+                // Stok Kontrol
+                if (amount > (veg_leftovers[veg_product_num - 1] - veg_cart[veg_product_num - 1])) {
+                    //İstenen Miktar > (Stoktaki Miktar - Sepetteki Ürünler)
+                    
+                    printf("\n! Insufficient Stock !\n");
+                    printf("Max Product: %.2lf Kg\n\n", veg_leftovers[veg_product_num - 1] - veg_cart[veg_product_num - 1]);
+                    Sleep(2000);
+                    goto shop_veg_try_again;
+                }
+                else {
+                    //Sepetteki Ürün = Sepetteki Ürün+Yeni Eklenen Miktar
+                    
+                    veg_cart[veg_product_num - 1] = veg_cart[veg_product_num - 1] + amount;
+                    //Fiyat hesaplama
+                    
+                    price_calculate(veg_prices[veg_product_num - 1], amount);
+                }
+                //Menüler Arası Geçiş
+                printf("\n0: Go Back | 1: Main Menu | 2: Add Product\n");
+                scanf("%d", &back);
+
+                if (back == 0) { 
+                    goto shopping_back; 
+                }
+                else if (back == 1) { 
+                    goto startmenu; 
+                }
+                else { 
+                     
+                    goto shop_veg_try_again; 
+                }
+                break;
+
+            case 2: // ETLER
+                 
+            shop_meat_try_again:
+
+                printf("=== MEAT & CHICKEN & FISH ===\n");
+                for (int i = 0; i < 4; i++) {
+                    printf("|%d.%s= %.2lf TL/Kg | Stok: %.2lf|\n", i + 1, meat_names[i], meat_prices[i], meat_leftovers[i]);
+                }
+                printf("___________________\n");
+
+                int meat_product_num;
+                printf("\nEnter Product Code: ");
+                scanf("%d", &meat_product_num);
+                
+                if (meat_product_num < 1 || meat_product_num > 4) {
+                    printf("Wrong Number!\n");
+                    Sleep(1000);
+                    goto shop_meat_try_again;
+                }
+
+                printf("\nProduct: %s\n", meat_names[meat_product_num - 1]);
+                printf("Amount: ");
+                scanf("%f", &amount);
+
+                if (amount > (meat_leftovers[meat_product_num - 1] - meat_cart[meat_product_num - 1])) {
+                    printf("\n! Insufficient Stock !\n");
+                    printf("Max Product: %.2lf kg\n\n", meat_leftovers[meat_product_num - 1] - meat_cart[meat_product_num - 1]);
+                    Sleep(2000);
+                    goto shop_meat_try_again;
+                }
+                else {
+                    meat_cart[meat_product_num - 1] = meat_cart[meat_product_num - 1] + amount;
+                    price_calculate(meat_prices[meat_product_num - 1], amount);
+                }
+
+                printf("\n0: Go Back | 1: Main Menu | 2: Add Product\n");
+                scanf("%d", &back);
+
+                if (back == 0) { goto shopping_back; }
+                else if (back == 1) { goto startmenu; }
+                else {   goto shop_meat_try_again; }
+                break;
+
+            case 3: // SUT URUNLERI
+                 
+            shop_milk_try_again:
+
+                printf("=== MILK & DAIRY PRODUCTS ===\n");
+                for (int i = 0; i < 4; i++) {
+                    printf("|%d.%s= %.2lf TL/Kg | Stok: %.2lf|\n", i + 1, milk_names[i], milk_prices[i], milk_leftovers[i]);
+                }
+                printf("___________________\n");
+
+                int milk_product_num;
+                printf("\nProduct Code: ");
+                scanf("%d", &milk_product_num);
+
+                if (milk_product_num < 1 || milk_product_num > 4) {
+                    printf("Wrong Number!\n");
+                    Sleep(1000);
+                    goto shop_milk_try_again;
+                }
+
+                printf("\nProduct: %s\n", milk_names[milk_product_num - 1]);
+                printf("Amount: ");
+                scanf("%f", &amount);
+
+                if (amount > (milk_leftovers[milk_product_num - 1] - milk_cart[milk_product_num - 1])) {
+                    printf("\n! Insufficient Stock !\n");
+                    printf("Max Product: %.2lf kg\n\n", milk_leftovers[milk_product_num - 1] - milk_cart[milk_product_num - 1]);
+                    Sleep(2000);
+                    goto shop_milk_try_again;
+                }
+                else {
+                    milk_cart[milk_product_num - 1] = milk_cart[milk_product_num - 1] + amount;
+                    price_calculate(milk_prices[milk_product_num - 1], amount);
+                }
+
+                printf("\n0: Go Back | 1: Main Menu | 2: Add Product\n");
+                scanf("%d", &back);
+
+                if (back == 0) { 
+                    goto shopping_back; 
+                }
+                else if (back == 1) { 
+                    goto startmenu; 
+                }
+                else { 
+                      
+                    goto shop_milk_try_again; 
+                }
+                break;
+
+            case 4: // ABUR CUBUR
+                 
+            shop_snack_try_again:
+
+                printf("=== SNACKS ===\n");
+                for (int i = 0; i < 4; i++) {
+                    printf("|%d.%s= %.2lf TL | Stok: %d|\n", i + 1, snack_names[i], snacks_prices[i], snacks_leftovers[i]);
+                }
+                printf("___________________\n");
+
+                int snack_product_num;
+                printf("\nProduct Code: ");
+                scanf("%d", &snack_product_num);
+
+                if (snack_product_num < 1 || snack_product_num > 4) {
+                    printf("Wrong Number!\n");
+                    Sleep(1000);
+                    goto shop_snack_try_again;
+                }
+
+                printf("\nProduct: %s\n", snack_names[snack_product_num - 1]);
+                printf("Amount: ");
+                scanf("%f", &amount);
+
+                if (amount > (snacks_leftovers[snack_product_num - 1] - snack_cart[snack_product_num - 1])) {
+                    printf("\n! Insufficient Stock !\n");
+                    printf("Max Product: %.2lf kg\n\n", snacks_leftovers[snack_product_num - 1] - snack_cart[snack_product_num - 1]);
+                    Sleep(2000);
+                    goto shop_snack_try_again;
+                }
+                else {
+                    snack_cart[snack_product_num - 1] = snack_cart[snack_product_num - 1] + (int)amount;
+                    price_calculate(snacks_prices[snack_product_num - 1], amount);
+                }
+
+                printf("\n0: Go Back | 1: Main Menu | 2: Add Product\n");
+                scanf("%d", &back);
+
+                if (back == 0) { 
+                    goto shopping_back; 
+                }
+                else if (back == 1) { 
+                    goto startmenu; 
+                }
+                else { 
+                      
+                    goto shop_snack_try_again; 
+                }
+                break;
+
+            case 5: // Sepet Ve Kontrol
+            receipt_screen:
+                 
+                printf("=== CART ===\n\n");
+                
+                //İleride Sepet Boş İse Yapacağımız İşlemler İçin
+                int sepet_bos_mu = 1;
+
+                // 1. Sebzeler
+                for (int i = 0; i < 12; i++) {
+                    //Ürünlerin Kategori ,İsim , Miktarlarını ve Tutarlarını Yazar
+                    if (veg_cart[i] > 0) {
+                        printf("(1 - %d) %s : %.2lf Kg // %.2lf TL\n", i + 1, veg_names[i], veg_cart[i],veg_cart[i] * veg_prices[i]);
+                        sepet_bos_mu = 0;
+                    }
+                }
+                // 2. Etler
+                for (int i = 0; i < 4; i++) {
+                    if (meat_cart[i] > 0) {
+                        printf("(2 - %d) %s : %.2lf Kg // %.2lf TL\n", i + 1, meat_names[i], meat_cart[i], meat_cart[i]*meat_prices[i]);
+                        sepet_bos_mu = 0;
+                    }
+                }
+                // 3. Sutler
+                for (int i = 0; i < 4; i++) {
+                    if (milk_cart[i] > 0) {
+                        printf("(3 - %d) %s : %.2lf Kg // %.2lf TL\n", i + 1, milk_names[i], milk_cart[i],milk_cart[i]*milk_prices[i]);
+                        sepet_bos_mu = 0;
+                    }
+                }
+                // 4. Snackler
+                for (int i = 0; i < 4; i++) {
+                    if (snack_cart[i] > 0) {
+                        printf("(4 - %d) %s : %d Packet // %.2lf TL\n", i + 1, snack_names[i], snack_cart[i],snack_cart[i]*snacks_prices[i]);
+                        sepet_bos_mu = 0;
+                    }
+                }
+                //Sepet Boş Olduğunu Belirtir
+                if (sepet_bos_mu == 1) {
+                    printf("Empty Cart!\n");
+                }
+
+                printf("=========================\n");
+                printf("Total Price: %.2lf TL\n", total_cart);
+                printf("=========================\n");
+
+                // Sepet Menu Seçenekleri
+                printf("1. Confirm And Buy\n");
+                printf("2. Remove Product\n");
+                printf("3. Clear All\n");
+                printf("4. Go Back \n");
+                printf("Choice: ");
+                //Sepeti Onaylayıp Alışverişi Tamamlama Kısmı
+                int confirm;
+                scanf("%d", &confirm);
+
+                if (confirm == 1 && sepet_bos_mu == 0) {
+                    //Confirm Seçeneği Seçildi ve Sepet Boş Değil İse
+                    //Kasaya Parayı Buradan Ekliyoruz
+                    market_vault= market_vault + total_cart;
+                    // ODEME ISLEMI
+                    for (int i = 0; i < 12; i++) { 
+                        veg_leftovers[i] -= veg_cart[i]; 
+                        veg_cart[i] = 0;
+                        //Stoklardan Ürünü Eksiltir Kalıcı Olarak ve Sepeti Boşaltır
+                    }
+                    for (int i = 0; i < 4; i++) { 
+                        meat_leftovers[i] -= meat_cart[i]; 
+                        meat_cart[i] = 0; 
+                    }
+                    for (int i = 0; i < 4; i++) { 
+                        milk_leftovers[i] -= milk_cart[i]; 
+                        milk_cart[i] = 0; 
+                    }
+                    for (int i = 0; i < 4; i++) { 
+                        snacks_leftovers[i] -= snack_cart[i]; 
+                        snack_cart[i] = 0; 
+                    }
+
+                    total_cart = 0;
+                    printf("\nPurchahed! Stocks Renewed.\n");
+                    Sleep(2000);
+                    goto startmenu;
+                }
+                else if (confirm == 2) {
+                    //Ürün Çıkartma Menüsü
+                    if (sepet_bos_mu == 1) {
+                        printf("\nEmpty Cart!\n");
+                        Sleep(1500);
+                        goto receipt_screen;
+                    }
+                    
+                    printf("\n=== Del Product ===\n");
+                    //Silinecek Ürünün Kategorisi Seçilir
+                    printf("Category (1-4): ");
+                    scanf("%d", &del_category);
+                    //Silinecek Ürünün Numarası Yazılır
+                    printf("Product Code: ");
+                    scanf("%d", &del_product);
+                    //Silinecek Miktar Girilir
+                    printf("Del Amount: ");
+                    scanf("%f", &del_amount);
+
+                    // Kategoriye gore islem (Parallel Array oldugu icin switch kullanamiyoruz, if-else daha kolay)
+                    //Seçilen Katagöriye Göre İşlem
+                    if (del_category == 1) {
+                        //Sepetteki Miktar[Silinecek Ürün Codu - 1] >= Silinecek Miktar
+                        if (veg_cart[del_product - 1] >= del_amount) {
+                            
+                            //Sepetteki Miktar = Sepetteki Miktar - Silinecek Miktar
+                            veg_cart[del_product - 1] = veg_cart[del_product - 1] - del_amount;
+                            
+                            total_cart = total_cart - (del_amount * veg_prices[del_product - 1]);
+                            //Tüm Sepet Tutarı = Tüm Sepet Tutarı - (Silinen Miktar * Ürün Fiyatı)
+                            printf("Product Deleted.\n");
+                        }
+                        else { printf("Wrong Enter Or Amount!\n"); }
+                    }
+                    // MEAT
+                    else if (del_category == 2) {
+                        if (meat_cart[del_product - 1] >= del_amount) {
+                            meat_cart[del_product - 1] = meat_cart[del_product - 1] - del_amount;
+                            total_cart = total_cart - (del_amount * meat_prices[del_product - 1]);
+                            printf("Product Deleted.\n");
+                        }
+                        else { printf("Wrong Enter Or Amount!\n"); }
+                    }
+                    // MILK
+                    else if (del_category == 3) {
+                        if (milk_cart[del_product - 1] >= del_amount) {
+                            milk_cart[del_product - 1] = milk_cart[del_product - 1] - del_amount;
+                            total_cart = total_cart - (del_amount * milk_prices[del_product - 1]);
+                            printf("Product Deleted.\n");
+                        }
+                        else { printf("Wrong Enter Or Amount!\n"); }
+                    }
+                    // SNACK
+                    else if (del_category == 4) {
+                        if (snack_cart[del_product - 1] >= (int)del_amount) {
+                            snack_cart[del_product - 1] = snack_cart[del_product - 1] - (int)del_amount;
+                            total_cart = total_cart - (del_amount * snacks_prices[del_product - 1]);
+                            printf("Product Deleted.\n");
+                        }
+                        else { printf("Wrong Enter Or Amount!\n"); }
+                    }
+                    else {
+                        printf("Invalid Category!\n");
+                    }
+                    // Guncel sepeti gormek icin ekrani yeniler
+                    Sleep(1500);
+                    goto receipt_screen; 
+                }
+                else if (confirm == 3) {
+                    // SEPET SIFIRLAMA
+                    for (int i = 0; i < 12; i++) veg_cart[i] = 0;
+                    for (int i = 0; i < 4; i++) { meat_cart[i] = 0; milk_cart[i] = 0; snack_cart[i] = 0; }
+
+                    total_cart = 0;
+                    printf("\nSepet Iptal Edildi!\n");
+                    Sleep(1500);
+                    goto shopping_back;
+                }
+                else {
+                    goto shopping_back;
+                }
+                break;
+            }
+            break;
+
+        case 2:
+            // Manager Login
+            attempts = 5;
+             
+            while (attempts > 0) {
+                printf("===MANAGER LOGIN SYSTEM===\n\n");
+                printf("Please Enter Your Password: ");
+                scanf("%d", &user_input);
+
+                if (master_password == user_input) {
+                    //Bekleme Efekti ...
+                    for (int i = 0; i < 4; i++){
+                         
+                        printf("\nAccess Granted! Redirecting to Manager Menu\n");
+                        while (point[point_delay] != '\0') {
+                            printf("%c", point[point_delay]);
+                            Sleep(400);
+                            point_delay++;
+                        }
+                    point_delay = 0;
+                }
+                    Sleep(500);
+                    break;
+                }
+                else {
+                    attempts--;
+                    printf("Access Denied! Incorrect Password. You have %d attempts left\n", attempts);
+                }
+
+                if (attempts == 0) {
+                     
+                    printf("Access Denied! System Locked.\n");
+                    return 0;
+                }
+            }
+
+            // Manager Menu
+        manager_again:
+             
+            printf("\n___________________\nMANAGERMENU\n___________________\n1.Stocks Menu\n2.Earning Menu\n3.Wholesaler Menu\n");
+            scanf("%d", &manager_menu);
+
+            if (manager_menu == 1 || manager_menu == 2 || manager_menu == 3) {
+                switch (manager_menu) {
+                case 1:
                 stock_back:
                     int stock_category;
                     printf("\nStocks Menu & Price Management\n___________________\n\n1.Fruits & Vegetables\n2.Meat & Chicken & Fish\n3.Milk & Dairy Products\n4.Snacks\n\n");
@@ -124,3 +635,187 @@ case 1:
                     break;
                     }
                     break;
+
+                case 2:
+                     
+                    printf("\nEarning Menu\n___\n");
+                    printf("\n=================================\n");
+                    printf("        MARKET FINANCAL REPORT        \n");
+                    printf("=================================\n");
+                    printf(" Total Revenue  : %.2lf TL\n", market_vault);
+
+                    printf(" Status         : Active\n");
+                    printf("=================================\n");
+                for_back:
+                    printf("Back to manager menu : 1");
+                    printf("\nBack to start menu : 2\n");
+                    int earn_back;
+                    scanf("%d", &earn_back);
+                    if (earn_back == 1) {
+                        goto manager_again;
+                    }
+                    else if (earn_back == 2) {
+                        goto startmenu;
+                    }
+                    else {
+                        printf("Wrong Number Try Again!\n");
+                        goto for_back;
+                    }
+
+
+                    break;
+                case 3:
+                     
+                    printf("\nWholesaler Menu\n___________________\n");
+
+
+                wholesaler_back:
+                    printf("\n====================================");
+                    printf("\n     WHOLESALER -- STOCK SUPPLY     ");
+                    printf("\n====================================\n");
+                    printf("1.  Fruits & Vegetables\n");
+                    printf("2.  Meat & Chicken &Fish\n");
+                    printf("3.  Milk & Dairy Products\n");
+                    printf("4.  Snacks\n");
+                    printf("5. Go Back to Manager Menu\n");
+                    printf("6. Go Back to Main Menu\n");
+                    printf("Selection: ");
+
+                    int supply_category;
+                    scanf("%d", &supply_category);
+
+                    if (supply_category == 5){ goto manager_again; }
+                        
+                    if (supply_category == 6) { goto startmenu; }
+                    
+                    int p_num;
+                    float p_add;
+
+                    switch (supply_category) {
+                    case 1:
+                        printf("===SUPPLY FRUITS & VEGETABLES===\n");
+                        for (int i = 0; i < 12; i++) {
+                            printf("%d. %-15s | Current Stock: %.2f\n", i + 1, veg_names[i], veg_leftovers[i]);
+
+                        }
+                        printf("0. Go Back to Wholesaler Menu\n");
+                        printf("\nEnter Product Code: "); scanf("%d", &p_num);
+                        if (p_num == 0) {
+                            goto wholesaler_back;
+                        }
+                        else if (p_num < 1 || p_num > 12) {
+                            printf("\n[ERROR] Invalid Product Code! Try Again.\n");
+                            Sleep(1500);
+                            goto wholesaler_back;
+                        }
+                        else {
+
+
+                            printf("Enter Amount to Add (kg):"); scanf("%f", &p_add);
+                            veg_leftovers[p_num - 1] += p_add;
+                            printf("\n[SUCCES] Stock updated for %s.\n", veg_names[p_num - 1]);
+                            goto wholesaler_back;
+                            break;
+                        }
+                    case 2:
+                        printf("===SUPPLY MEAT PRODUCTS===\n");
+                        for (int i = 0;i < 4;i++) {
+                            printf("%d. %15s | Current Stock: %2.f\n", i + 1, meat_names[i], meat_leftovers[i]);
+
+                        }
+                        printf("0. Go Back to Wholesaler Menu\n");
+                        printf("\nEnter Product Code: "); scanf("%d", &p_num);
+                        if (p_num == 0) {
+                            goto wholesaler_back;
+                        }
+                        else if (p_num < 1 || p_num > 4) {
+                            printf("\n[ERROR] Invalid Product Code! Try Again.\n");
+                            Sleep(1500);
+                            goto wholesaler_back;
+                        }
+                        else {
+                            printf("Enter Amount to Add (kg): "); scanf("%f", &p_add);
+                            meat_leftovers[p_num - 1] += p_add;
+                            printf("\n[SUCCESS] Stock updated. Press any key...");
+                            goto wholesaler_back;
+                            break;
+                        }
+                    case 3:
+                        printf("===SUPPLY DAIRY PRODUCTS===\n");
+                        for (int i = 0; i < 4;i++) {
+                            printf("%d. %-15s | Current Stock: %.2f\n", i + 1, milk_names[i], milk_leftovers[i]);
+
+                        }
+                        printf("0. Go Back to Wholesaler Menu\n");
+                        printf("\nEnter Product Code: "); scanf("%d", &p_num);
+                        if (p_num == 0) {
+                            goto wholesaler_back;
+                        }
+                        else if (p_num < 1 || p_num > 4) {
+                            printf("\n[ERROR] Invalid Product Code! Try Again.\n");
+                            Sleep(1500);
+                            goto wholesaler_back;
+                        }
+                        else {
+                            printf("Enter Amount to Add (kg/L): "); 
+                            scanf("%f", &p_add);
+                            milk_leftovers[p_num - 1] += p_add;
+                            printf("\n[SUCCESS] Stock updated. Press any key...");
+                            goto wholesaler_back;
+                            break;
+                        }
+                    case 4:
+                        printf("===SUPPLY SNACKS===\n");
+                        for (int i = 0;i < 4;i++) {
+                            printf("%d. %-15s | Current Stock: %d\n", i + 1, snack_names[i], snacks_leftovers[i]);
+
+                        }
+                        printf("0. Go Back to Wholesaler Menu\n");
+                        printf("\nEnter Product Code: "); scanf("%d", &p_num);
+                        if (p_num == 0) {
+                            goto wholesaler_back;
+                        }
+                        else if (p_num < 1 || p_num > 4) {
+                            printf("\n[ERROR] Invalid Product Code! Try Again.\n");
+                            Sleep(1500);
+                            goto wholesaler_back;
+                        }
+                        else {
+                            printf("Enter Amount to Add (Packets): "); scanf("%f", &p_add);
+                            snacks_leftovers[p_num - 1] += (int)p_add;
+                            printf("\n[SUCCESS] Stock updated. Press any key...");
+                            goto wholesaler_back;
+                            break;
+                        }
+                    default:
+                        printf("\nInvalid Selection!\n");
+                        Sleep(1500);
+                        goto wholesaler_back;
+                        break;
+                    }
+
+                    break;
+                }
+            }
+            else {
+
+                printf("\nPlease Choose Again/Manager Menu\n\n");
+                goto manager_again;
+            }
+            break;
+        case 3:
+            return 0;
+
+        default:
+            break;
+        }
+
+    }
+    else {
+         
+        printf("\nWrong Selection! Please Choose Again\n\n");
+        goto startmenu;
+    }
+
+    return 0;
+}
